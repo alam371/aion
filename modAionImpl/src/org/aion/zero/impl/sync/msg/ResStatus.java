@@ -35,11 +35,12 @@
 
 package org.aion.zero.impl.sync.msg;
 
-import java.nio.ByteBuffer;
 import org.aion.p2p.Ctrl;
 import org.aion.p2p.Msg;
 import org.aion.p2p.Ver;
 import org.aion.zero.impl.sync.Act;
+
+import java.nio.ByteBuffer;
 
 /**
  * @author Chris
@@ -69,9 +70,9 @@ public final class ResStatus extends Msg {
         super(Ver.V0, Ctrl.SYNC, Act.RES_STATUS);
         this.bestBlockNumber = bestBlockNumber;
         this.totalDifficultyLen = _totalDifficulty.length > Byte.MAX_VALUE ? 1 : (byte)_totalDifficulty.length;
-        this.totalDifficulty = _totalDifficulty;
-        this.bestHash = _bestHash;
-        this.genesisHash = _genesisHash;
+        this.totalDifficulty = _totalDifficulty.clone();
+        this.bestHash = _bestHash.clone();
+        this.genesisHash = _genesisHash.clone();
     }
 
     /**

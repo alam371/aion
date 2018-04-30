@@ -81,9 +81,10 @@ public final class ReqStatusHandler extends Handler {
         if ((now - cacheTs) > this.UPDATE_INTERVAL) {
             synchronized (cache) {
                 try {
-                    cache = new ResStatus(this.chain.getBestBlock().getNumber(),
-                            this.chain.getTotalDifficulty().toByteArray(), this.chain.getBestBlockHash(),
-                            this.genesisHash);
+                	synchronized (this.chain) {
+						cache = new ResStatus(this.chain.getBestBlock().getNumber(), this.chain.getTotalDifficulty().toByteArray(), this.chain.getBestBlockHash(),
+								this.genesisHash);
+					}
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -92,6 +93,7 @@ public final class ReqStatusHandler extends Handler {
         }
 
         this.mgr.send(_nodeIdHashcode, _displayId, cache);
+
         this.log.debug("<req-status node={} return-blk={}>",
             _displayId,
             cache.getBestBlockNumber()
